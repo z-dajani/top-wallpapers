@@ -5,6 +5,7 @@ module WallpaperDownloader
     if amount.class.ancestors.include?(Numeric) && amount <= 25
       url = "https://www.reddit.com/r/#{subreddit_name}/top/.json"
       response = get_json_response(url)
+      raise 'non 200 response' unless response
       posts = response['data']['children'].first(amount)
       extract_post_info(posts)
     else
@@ -20,6 +21,7 @@ module WallpaperDownloader
     res = Net::HTTP.start(url.host, url.port, use_ssl: true) do 
       |http| http.request(req)
     end
+    return false if res.code[0] != '2'
     JSON.parse(res.body)
   end
 
