@@ -1,11 +1,10 @@
 %w(net/https pry json).each { |f| require f }
 
 module WallpaperDownloader
-  def self.subreddit_top_daily_posts(subreddit_name, amount)
+  def self.subreddit_top_daily_posts(subreddit_name, amount: 1)
     if amount.class.ancestors.include?(Numeric) && amount <= 25
       url = "https://www.reddit.com/r/#{subreddit_name}/top/.json"
       response = get_json_response(url)
-      raise 'non 200 response' unless response
       posts = response['data']['children'].first(amount)
       extract_post_info(posts)
     else
@@ -13,7 +12,7 @@ module WallpaperDownloader
     end
   end
 
-  #private class methods
+  ###private class methods###
 
   def self.get_json_response(_url)
     url = URI.parse(_url)
@@ -21,7 +20,7 @@ module WallpaperDownloader
     res = Net::HTTP.start(url.host, url.port, use_ssl: true) do 
       |http| http.request(req)
     end
-    return false if res.code[0] != '2'
+    raise "non-200 response: #{res.code}" unless res.code[0] == '2'
     JSON.parse(res.body)
   end
 
