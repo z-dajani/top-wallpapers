@@ -25,13 +25,11 @@ module WallpaperDownloader
   end
 
   def self.extract_post_info(posts)
-    important_keys = ['author', 'domain', 'permalink', 'score',
-                      'thumbnail', 'title', 'url']
+    keys = ['author', 'domain', 'url', 'score', 'title', 'thumbnail', 
+           'permalink']
     posts.map do |p|
       h = {}
-      important_keys.each do |key|
-        h.merge!(key.to_sym => p['data'][key]) if p['data'][key]
-      end
+      keys.each { |k| h.merge!(k.to_sym => p['data'][k]) if p['data'][k] }
       h
     end
   end
