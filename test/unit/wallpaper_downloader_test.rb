@@ -11,14 +11,14 @@ class WallpaperDownloaderTest < MiniTest::Unit::TestCase
 
   def test_subreddit_top_daily_posts_invalid_subreddit_name
     assert_raises RuntimeError do
-      WallpaperDownloader.subreddit_top_daily_posts('a' * 400)
+      WallpaperDownloader.subreddit_top_daily_posts('a' * 400, 10)
     end
   end
 
   def test_subreddit_top_daily_posts_invalid_post_amount
     [0,26,'hello'].each do |n|
       assert_raises ArgumentError do
-        WallpaperDownloader.subreddit_top_daily_posts('funny', 26)
+        WallpaperDownloader.subreddit_top_daily_posts('funny', n)
       end
     end
   end

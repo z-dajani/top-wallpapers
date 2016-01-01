@@ -1,8 +1,8 @@
 %w(net/https pry json).each { |f| require f }
 
 module WallpaperDownloader
-  def self.subreddit_top_daily_posts(subreddit_name, amount: 1)
-    if amount.class.ancestors.include?(Numeric) && amount <= 25
+  def self.subreddit_top_daily_posts(subreddit_name, amount)
+    if amount.class.ancestors.include?(Numeric) && amount.between?(1, 25)
       url = "https://www.reddit.com/r/#{subreddit_name}/top/.json"
       response = get_json_response(url)
       posts = response['data']['children'].first(amount)
@@ -25,8 +25,7 @@ module WallpaperDownloader
   end
 
   def self.extract_post_info(posts)
-    keys = ['author', 'domain', 'url', 'score', 'title', 'thumbnail', 
-           'permalink']
+    keys = ['url', 'score', 'title', 'thumbnail', 'permalink']
     posts.map do |p|
       h = {}
       keys.each { |k| h.merge!(k.to_sym => p['data'][k]) if p['data'][k] }

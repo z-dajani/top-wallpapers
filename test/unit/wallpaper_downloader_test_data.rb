@@ -1,30 +1,24 @@
 require 'json'
 
 $top_3_formatted_posts = 
- [{:author=>"TheXbro",
-  :domain=>"i.imgur.com",
-  :permalink=>"/r/wallpapers/comments/3ys0bg/star_destroyer/",
+[ {:permalink=>"/r/wallpapers/comments/3ys0bg/star_destroyer/",
   :score=>2018,
   :thumbnail=>
    "http://b.thumbs.redditmedia.com/JFRnrJYDSGDhZWHIX8yzE7TZAylTWBX_xknPDQY5bfQ.jpg",
   :title=>"Star Destroyer",
   :url=>"http://i.imgur.com/x8bu3JE.jpg"},
- {:author=>"jaqut",
-  :domain=>"i.imgur.com",
-  :permalink=>"/r/wallpapers/comments/3ypj88/space_shuttle/",
+ {:permalink=>"/r/wallpapers/comments/3ypj88/space_shuttle/",
   :score=>173,
   :thumbnail=>
    "http://a.thumbs.redditmedia.com/oi71EfEpKh_eibbi9SGtI0BTj-hU1RIG542h_VIU5I8.jpg",
   :title=>"Space Shuttle",
   :url=>"http://i.imgur.com/C49VtMu.jpg"},
- {:author=>"TheXbro",
-  :domain=>"i.imgur.com",
-  :permalink=>"/r/wallpapers/comments/3ys3kj/rey_star_wars_the_force_awakens/",
+ {:permalink=>"/r/wallpapers/comments/3ys3kj/rey_star_wars_the_force_awakens/",
   :score=>33,
   :thumbnail=>
    "http://b.thumbs.redditmedia.com/cWWMM0DiMlznykbqkI1dZ-Aw9Y20wrIcNqNDL3041KY.jpg",
   :title=>"Rey - Star Wars: The Force Awakens",
-  :url=>"http://i.imgur.com/78mtEce.jpg"}]
+  :url=>"http://i.imgur.com/78mtEce.jpg"} ]
 
 $top_3_raw_posts = JSON.parse(%q{
 [
