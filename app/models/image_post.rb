@@ -1,28 +1,42 @@
 class ImagePostValidator < ActiveModel::Validator
-  def validate(image_post)
+  def validate(post)
     require 'net/http'
     require 'uri'
+    validate_url(post)
+    validate_thumbnail(post)
+    validate_permalink(post)
+  end
 
-    unless image_post.permalink[0..2] == '/r/'
-      image_post.errors[:permalink] << 'is not in the correct form'
+  def validate_url(post)
+    return unless post.url
+
+    unless post.url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      post.errors[:url] << 'is not a valid http url'
     end
 
-    unless image_post.url =~ /\A#{URI::regexp(['http', 'https'])}\z/
-      image_post.errors[:url] << 'is not a valid http url'
-    end
-
-    url_host = URI.parse(image_post.url).host
+    url_host = URI.parse(post.url).host
     unless url_host == 'imgur.com' || url_host == 'i.imgur.com'
-      image_post.errors[:url] << 'is not an imgur link'
+      post.errors[:url] << 'is not an imgur link'
+    end
+  end
+
+  def validate_thumbnail(post)
+    return unless post.thumbnail
+
+    unless post.thumbnail =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      post.errors[:thumbnail] << 'is not a valid http url'
     end
 
-    unless image_post.thumbnail =~ /\A#{URI::regexp(['http', 'https'])}\z/
-      image_post.errors[:thumbnail] << 'is not a valid http url'
-    end
-
-    thumb_host = URI.parse(image_post.thumbnail).host
+    thumb_host = URI.parse(post.thumbnail).host
     unless thumb_host && thumb_host.chars.last(22).join == 'thumbs.redditmedia.com'
-      image_post.errors[:thumbnail] << 'is not a thumbs.redditmedia link'
+      post.errors[:thumbnail] << 'is not a thumbs.redditmedia link'
+    end
+  end
+
+  def validate_permalink(post)
+    return unless post.permalink
+    unless post.permalink[0..2] == '/r/'
+      post.errors[:permalink] << 'is not in the correct form'
     end
   end
 
