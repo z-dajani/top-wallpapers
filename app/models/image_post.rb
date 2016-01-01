@@ -14,8 +14,8 @@ class ImagePostValidator < ActiveModel::Validator
       post.errors[:url] << 'is not a valid http url'
     end
 
-    url_host = URI.parse(post.url).host
-    unless url_host == 'imgur.com' || url_host == 'i.imgur.com'
+    host = URI.parse(post.url).host
+    unless host == 'imgur.com' || host == 'i.imgur.com' || host == 'm.imgur.com'
       post.errors[:url] << 'is not an imgur link'
     end
   end
@@ -27,8 +27,8 @@ class ImagePostValidator < ActiveModel::Validator
       post.errors[:thumbnail] << 'is not a valid http url'
     end
 
-    thumb_host = URI.parse(post.thumbnail).host
-    unless thumb_host && thumb_host.chars.last(22).join == 'thumbs.redditmedia.com'
+    host = URI.parse(post.thumbnail).host
+    unless host && host.chars.last(22).join == 'thumbs.redditmedia.com'
       post.errors[:thumbnail] << 'is not a thumbs.redditmedia link'
     end
   end
