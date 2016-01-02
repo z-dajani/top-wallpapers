@@ -1,6 +1,27 @@
-posts in db: <%= @posts.count %>
-<% @posts.each do |p| %> 
-  <div class="post">
-    <%= p.title %> 
+<% if @posts.present? %> 
+
+  <div class="posts-container container">
+    <% @posts.each_slice(4) do |posts| %>
+      <div class="post-row text-center row">
+
+      <% posts.each do |p| %>
+          <div class="post col-sm-3">
+            <a href='<%= p.url %>'>
+              <%= image_tag(p.thumbnail, width: 180, height: 90) %>
+            </a>
+            <% perm = p.permalink %> 
+            <% pe = perm[3..(perm.length-1)] %> 
+            <div><%= perm.first(3) + pe[0...(pe.index('/'))] %></div>
+            <div>+<%= p.score %></div>
+          </div>
+      <% end %> 
+      
+      </div>
+    <% end %> 
+  </div>
+
+<% else %> 
+  <div class='jumbotron'>
+    <h2 class='text-center'>No posts exist in the database</h2>
   </div>
 <% end %> 

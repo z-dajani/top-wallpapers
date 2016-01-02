@@ -1,6 +1,6 @@
 class ImagePostController < ApplicationController
   def index
-    @posts = ImagePost.all
+    @posts = ImagePost.order('score DESC')
   end
   
 end
