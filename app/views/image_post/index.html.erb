@@ -9,9 +9,7 @@
             <a href='<%= p.url %>'>
               <%= image_tag(p.thumbnail, width: 180, height: 90) %>
             </a>
-            <% perm = p.permalink %> 
-            <% pe = perm[3..(perm.length-1)] %> 
-            <div><%= perm.first(3) + pe[0...(pe.index('/'))] %></div>
+            <div>/r/<%= p.subreddit %></div>
             <div>+<%= p.score %></div>
           </div>
       <% end %> 
