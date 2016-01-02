@@ -7,6 +7,7 @@ $top_posts_attr =
   "/r/EarthPorn/comments/3z0og3/the_patriarchs_zion_national_park_oc_3135x1272/",
  "thumbnail"=>
   "http://a.thumbs.redditmedia.com/JMUsNmFFpTWnZHFf5f2zTXA1jZzFtyIqKMwGN1dUjN8.jpg",
+ "subreddit"=>"EarthPorn",
  "score"=>2614},
 
   {"title"=>"Squamish, BC Canada - Great place to end 2015! [OC] [1200 × 800]",
@@ -15,6 +16,7 @@ $top_posts_attr =
   "/r/EarthPorn/comments/3z0270/squamish_bc_canada_great_place_to_end_2015_oc/",
  "thumbnail"=>
   "http://b.thumbs.redditmedia.com/yMHzq80QK_6I2p6Y6og1BmEg64aP-qLuO3c2xpIVpBM.jpg",
+ "subreddit"=>"EarthPorn",
  "score"=>134} ]
 
 $top_raw_posts = JSON.parse(%q{

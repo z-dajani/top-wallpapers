@@ -97,6 +97,11 @@ class ImagePostTest < ActiveSupport::TestCase
     end
   end
 
+  test 'subreddit should exist' do
+    @post.subreddit = ''
+    assert_not @post.valid?
+  end
+
   test 'score should exist' do
     @post.score = nil
     assert_not @post.valid?

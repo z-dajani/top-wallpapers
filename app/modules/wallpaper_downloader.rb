@@ -29,6 +29,7 @@ module WallpaperDownloader
       i = ImagePost.new(title: p['data']['title'], url: p['data']['url'],
                         permalink: p['data']['permalink'],
                         thumbnail: p['data']['thumbnail'],
+                        subreddit: p['data']['subreddit'],
                         score: p['data']['score'])
       i.save ? i : nil
     end

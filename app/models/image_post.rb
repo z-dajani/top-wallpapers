@@ -55,6 +55,7 @@ class ImagePost < ActiveRecord::Base
   validates :url, presence: true, uniqueness: true
   validates :permalink, presence: true, uniqueness: true
   validates :thumbnail, presence: true, uniqueness: true
+  validates :subreddit, presence: true
   validates :score, presence: true, numericality: { greater_than: -1 }
   validates_with ImagePostValidator
 end

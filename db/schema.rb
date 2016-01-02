@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160101233133) do
+ActiveRecord::Schema.define(version: 20160102042642) do
 
   create_table "image_posts", force: :cascade do |t|
     t.string   "title"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160101233133) do
     t.integer  "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "subreddit"
   end
 
   add_index "image_posts", ["permalink"], name: "index_image_posts_on_permalink", unique: true
