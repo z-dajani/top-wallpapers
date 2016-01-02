@@ -41,6 +41,11 @@ class ImagePostTest < ActiveSupport::TestCase
     end
   end
 
+  test "imgur album urls shouldn't be allowed" do
+    @post.url = 'https://imgur.com/a/0q4ghqejjjjj'
+    assert_not @post.valid?
+  end
+
   test 'permalink should exist' do
     @post.permalink = ''
     assert_not @post.valid?
