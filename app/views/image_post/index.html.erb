@@ -1,6 +1,6 @@
 <% if @posts.present? %> 
 
-  <div class="posts-container container">
+  <div id="posts-container" class='container'>
     <% @posts.each_slice(4) do |posts| %>
       <div class="post-row text-center row">
 
@@ -9,7 +9,9 @@
             <a href='<%= p.url %>'>
               <%= image_tag(p.thumbnail, width: 180, height: 90) %>
             </a>
-            <div>/r/<%= p.subreddit %></div>
+            <a href="https://www.reddit.com/<%= p.permalink %>">
+              <div>/r/<%= p.subreddit %></div>
+            </a>
             <div>+<%= p.score %></div>
           </div>
       <% end %> 
