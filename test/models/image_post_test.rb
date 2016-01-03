@@ -22,7 +22,7 @@ class ImagePostTest < ActiveSupport::TestCase
 
   test 'url should be unique' do
     @post.save
-    post2 = valid_image_post_2(save: false)
+    post2 = valid_image_post(save: false)
     post2.url = @post.url
     assert_not post2.valid?
   end
@@ -53,7 +53,7 @@ class ImagePostTest < ActiveSupport::TestCase
 
   test 'permalink should be unique' do
     @post.save
-    post2 = valid_image_post_2(save: false)
+    post2 = valid_image_post(save: false)
     post2.permalink = @post.permalink
     assert_not post2.valid?
   end
@@ -70,7 +70,7 @@ class ImagePostTest < ActiveSupport::TestCase
 
   test 'thumbnail should be unique' do
     @post.save
-    post2 = valid_image_post_2(save: false)
+    post2 = valid_image_post(save: false)
     post2.thumbnail = @post.thumbnail
     assert_not post2.valid?
   end 

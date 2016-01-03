@@ -19,18 +19,19 @@ class ImagePostControllerTest < ActionController::TestCase
 
   test 'index should contain links to the permalink of each post' do
     p1 = 'https://www.reddit.com' + valid_image_post.permalink
-    p2 = 'https://www.reddit.com' + valid_image_post_2.permalink
+    p2 = 'https://www.reddit.com' + valid_image_post.permalink
     get :index
     assert_select "a[href='#{p1}']"
     assert_select "a[href='#{p2}']"
   end
 
   test 'index posts should be sorted from highest score to lowest' do
-    valid_image_post
-    bigger_score_post = valid_image_post_2(save: false)
-    bigger_score_post.score = valid_image_post.score + 1
-    bigger_score_post.save
-    permalink = 'https://www.reddit.com' + bigger_score_post.permalink
+    small_score_post = valid_image_post
+    big_score_post = valid_image_post(save: false)
+    big_score_post.score = small_score_post.score + 1
+    big_score_post.save
+
+    permalink = 'https://www.reddit.com' + big_score_post.permalink
     get :index
     assert_select ".post:first-of-type a[href='#{permalink}']"
   end
