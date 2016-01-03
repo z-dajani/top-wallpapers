@@ -2,11 +2,12 @@ require 'test_helper'
 require 'json'
 require_relative 'wallpaper_downloader_test_data'
 
-
 class WallpaperDownloaderTest < MiniTest::Unit::TestCase
+  def teardown
+    ImagePost.destroy_all
+  end
 
   def test_extract_post_info
-    ImagePost.destroy_all
     posts = WallpaperDownloader.send(:extract_post_info, $top_raw_posts)
     attributes = []
     posts.each do |p|
