@@ -6,9 +6,9 @@
     </div>
 
     <ul class="nav navbar-nav">
-      <% p = params[:page].to_i %> 
+      <% p = params[:page].to_i %>
 
-      <% if p %>
+      <% if p > 1 %>
         <%= wrap_in_li(link_to('Previous Page', root_path(page: p-1))) if @previous_page_valid %> 
         <%= wrap_in_li(link_to('Next Page', root_path(page: p+1))) if @next_page_valid %> 
       <% else %> 

@@ -36,4 +36,47 @@ class ImagePostControllerTest < ActionController::TestCase
     assert_select ".post:first-of-type a[href='#{permalink}']"
   end
 
+  test 'typical pagination (first page)' do
+    42.times { valid_image_post }
+    get :index
+    assert_select "a[href='#{root_path}?page=2']"
+    assert_select "a[href='#{root_path}?page=0']", false
+    assert_select '.post', count: 20
+
+    get :index, page: 1
+    assert_select "a[href='#{root_path}?page=2']"
+    assert_select "a[href='#{root_path}?page=0']", false
+    assert_select '.post', count: 20
+  end
+
+  test 'typical pagination (not first page)' do
+    42.times { valid_image_post }
+    get :index, page: 2
+    assert_select "a[href='#{root_path}?page=1']"
+    assert_select "a[href='#{root_path}?page=3']"
+    assert_select '.post', count: 20
+  end
+
+  test 'pagination when no further pages exist' do
+    42.times { valid_image_post }
+    get :index, page: 3
+    assert_select "a[href='#{root_path}?page=2']"
+    assert_select "a[href='#{root_path}?page=4']", false
+    assert_select '.post', count: 2
+  end
+
+  test 'no pagination links should exist when no ImagePosts exist' do
+    get :index
+    assert_select "a[href='#{root_path}?page=2']", false
+  end
+
+  test 'first page of ImagePosts should show if invalid page param' do
+    20.times { valid_image_post }
+    lowest_scoring_post = valid_image_post(save: false)
+    lowest_scoring_post.score = 1
+    lowest_scoring_post.save
+    get :index, page: 'f'
+    assert_select "a[href='#{lowest_scoring_post.url}']", false
+  end
+
 end
