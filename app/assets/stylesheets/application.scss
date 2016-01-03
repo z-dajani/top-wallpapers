@@ -4,3 +4,7 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.navbar-nav li{
+  max-width: 200px;
+}

@@ -1,3 +1,24 @@
+<header class="navbar navbar-default navbar-top">
+  <div class="container-fluid">
+  
+    <div class="navbar-header">
+      <%= link_to "Home", :root, class: 'navbar-brand' %>
+    </div>
+
+    <ul class="nav navbar-nav">
+      <% p = params[:page].to_i %> 
+
+      <% if p %>
+        <%= wrap_in_li(link_to('Previous Page', root_path(page: p-1))) if @previous_page_valid %> 
+        <%= wrap_in_li(link_to('Next Page', root_path(page: p+1))) if @next_page_valid %> 
+      <% else %> 
+        <%= wrap_in_li(link_to('Next Page', root_path(page: 2))) if @next_page_valid %>
+      <% end %> 
+    </ul>
+
+  </div>
+</header>
+
 <% if @posts.present? %> 
 
   <div id="posts-container" class='container'>
@@ -9,7 +30,7 @@
             <a href='<%= p.url %>'>
               <%= image_tag(p.thumbnail, width: 180, height: 90) %>
             </a>
-            <a href="https://www.reddit.com/<%= p.permalink %>">
+            <a href="https://www.reddit.com<%= p.permalink %>">
               <div>/r/<%= p.subreddit %></div>
             </a>
             <div>+<%= p.score %></div>
@@ -19,8 +40,7 @@
       </div>
     <% end %> 
   </div>
-
-<% else %> 
+<% elsif ImagePost.count == 0 %> 
   <div class='jumbotron'>
     <h2 class='text-center'>No posts exist in the database</h2>
   </div>
