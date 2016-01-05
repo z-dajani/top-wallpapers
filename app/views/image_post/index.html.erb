@@ -2,7 +2,7 @@
   <div class="container-fluid">
   
     <div class="navbar-header">
-      <%= link_to "Home", :root, class: 'navbar-brand' %>
+      <%= link_to "Top Wallpapers", :root, class: 'navbar-brand' %>
     </div>
 
     <ul class="nav navbar-nav">
@@ -27,13 +27,15 @@
 
       <% posts.each do |p| %>
           <div class="post col-sm-3">
-            <a href='<%= p.url %>'>
-              <%= image_tag(p.thumbnail, width: 180, height: 90) %>
-            </a>
-            <a href="https://www.reddit.com<%= p.permalink %>">
-              <div>/r/<%= p.subreddit %></div>
-            </a>
-            <div>+<%= p.score %></div>
+            <div class="post-background">
+              <a href='<%= p.url %>'>
+                <%= image_tag(p.thumbnail, width: 170, height: 85) %>
+              </a>
+              <a href="https://www.reddit.com<%= p.permalink %>">
+                <div>/r/<%= p.subreddit %></div>
+              </a>
+              <div>+<%= p.score %></div>
+            </div>
           </div>
       <% end %> 
       

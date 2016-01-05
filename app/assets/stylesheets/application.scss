@@ -5,6 +5,23 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-.navbar-nav li{
-  max-width: 200px;
+body{
+  background-image: url('green_cup.png');
+  font-family: sans-serif;
+  color: #363636;
+}
+
+.navbar, .jumbotron, .post-background{
+  background-color: #F8F8F8;
+}
+
+.post-background{
+  min-width: 180px;
+  padding-top: 6px;
+  border: 1px white solid;
+  border-radius: 5px;
+}
+
+.navbar *{
+  color: #363636 !important;
 }
