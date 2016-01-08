@@ -11,7 +11,9 @@ class WallpaperDownloaderTest < MiniTest::Unit::TestCase
     posts = WallpaperDownloader.send(:extract_post_info, $top_raw_posts)
     attributes = []
     posts.each do |p|
-      attributes << p.attributes.except('id', 'created_at', 'updated_at')
+      attributes << p.attributes.except('id', 'created_at', 'updated_at',
+                          'thumb_img_file_name', 'thumb_img_file_size',
+                          'thumb_img_content_type', 'thumb_img_updated_at')
     end
     assert_equal($top_posts_attr, attributes)
   end

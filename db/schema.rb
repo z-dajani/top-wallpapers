@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102042642) do
+ActiveRecord::Schema.define(version: 20160108044926) do
 
   create_table "image_posts", force: :cascade do |t|
     t.string   "title"
@@ -19,9 +19,13 @@ ActiveRecord::Schema.define(version: 20160102042642) do
     t.string   "permalink"
     t.string   "thumbnail"
     t.integer  "score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.string   "subreddit"
+    t.string   "thumb_img_file_name"
+    t.string   "thumb_img_content_type"
+    t.integer  "thumb_img_file_size"
+    t.datetime "thumb_img_updated_at"
   end
 
   add_index "image_posts", ["permalink"], name: "index_image_posts_on_permalink", unique: true

@@ -51,6 +51,9 @@ end
 class ImagePost < ActiveRecord::Base
   before_save { self.title = self.title[0..69] if self.title.length > 70 }
 
+  has_attached_file :thumb_img, styles: { thumb: "150x60>" }, 
+                                default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :thumb_img, content_type: /\Aimage\/.*\Z/
   validates :title, presence: true
   validates :url, presence: true, uniqueness: true
   validates :permalink, presence: true, uniqueness: true
