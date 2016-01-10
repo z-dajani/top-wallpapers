@@ -29,7 +29,7 @@
           <div class="post col-sm-3">
             <div class="post-background">
               <a href='<%= p.url %>'>
-                <%= image_tag(p.thumbnail, width: 170, height: 85) %>
+                <%= image_tag(p.thumb_img.url, width: 170, height: 85) %>
               </a>
               <a href="https://www.reddit.com<%= p.permalink %>">
                 <div>/r/<%= p.subreddit %></div>
