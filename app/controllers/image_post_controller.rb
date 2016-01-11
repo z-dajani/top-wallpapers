@@ -10,5 +10,9 @@ class ImagePostController < ApplicationController
       @next_page_valid = true if ImagePost.count > 20
     end
   end
-  
+
+  def refresh
+    render text: 'test'
+  end
+
 end
