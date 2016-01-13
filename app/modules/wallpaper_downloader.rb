@@ -3,6 +3,9 @@
 module WallpaperDownloader
 
   def self.refresh_posts
+    return unless ready_to_refresh?
+    File.write('app/modules/seconds_since_wallpaper_refresh', Time.now.to_i)
+
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
     abandonedporn mapporn architectureporn roomporn exposureporn)
     subreddits.each do |sub|
@@ -10,6 +13,15 @@ module WallpaperDownloader
       old_posts.each { |p| p.destroy }
       subreddit_top_daily_posts(sub, 7)
     end
+  end
+
+  def self.ready_to_refresh?
+    begin
+      last_refresh_time = IO.read('app/modules/seconds_since_wallpaper_refresh').to_i
+      (Time.now.to_i - last_refresh_time) >= 600
+    rescue Errno::ENOENT
+      true
+    end      
   end
 
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
@@ -23,7 +35,9 @@ module WallpaperDownloader
     end
   end
 
+
   ####private class methods####
+
 
   def self.get_json_response(_url)
     url = URI.parse(_url)
