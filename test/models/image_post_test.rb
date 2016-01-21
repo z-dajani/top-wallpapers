@@ -1,4 +1,6 @@
 require 'test_helper'
+require 'json'
+require_relative 'wallpaper_downloader_test_data'
 
 class ImagePostTest < ActiveSupport::TestCase
   def setup
@@ -110,6 +112,31 @@ class ImagePostTest < ActiveSupport::TestCase
   test 'score should be positive' do
     @post.score = -1
     assert_not @post.valid?
+  end
+
+  test 'extraction of post info' do
+    posts = ImagePost.send(:extract_post_info, $top_raw_posts)
+    attributes = []
+    posts.each do |p|
+      attributes << p.attributes.except('id', 'created_at', 'updated_at',
+                        'thumb_img_file_name', 'thumb_img_file_size',
+                        'thumb_img_content_type', 'thumb_img_updated_at')
+    end
+    assert_equal($top_posts_attr, attributes)
+  end
+
+  test 'subreddit_top_daily_posts - invalid subreddit name' do
+    assert_raises RuntimeError do
+      ImagePost.subreddit_top_daily_posts('a' * 100, 10)
+    end
+  end
+
+  test 'subreddit_top_daily_posts - invalid post amount' do
+    [0,26,'hello'].each do |n|
+      assert_raises ArgumentError do
+        ImagePost.subreddit_top_daily_posts('wallpaper', n)
+      end
+    end
   end
 
 end
