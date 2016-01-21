@@ -9,7 +9,7 @@ class ImagePostController < ApplicationController
       @posts = ImagePost.order('score DESC').first(20)
       @next_page_valid = true if ImagePost.count > 20
     end
-    params[:ready_for_refresh] = WallpaperDownloader::ready_to_refresh?
+    params[:ready_for_refresh] = ImagePost.ready_to_refresh?
   end
 
   def refresh
