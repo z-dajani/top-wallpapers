@@ -64,7 +64,7 @@ class ImagePost < ActiveRecord::Base
 
   def self.refresh_posts
     return unless ready_to_refresh?
-    File.write('app/seconds_since_wallpaper_refresh', Time.now.to_i)
+    File.write('app/last_wallpaper_refresh', Time.now.to_i)
 
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
     abandonedporn mapporn architectureporn roomporn exposureporn)
@@ -77,7 +77,7 @@ class ImagePost < ActiveRecord::Base
 
   def self.ready_to_refresh?
     begin
-      last_refresh_time = IO.read('app/seconds_since_wallpaper_refresh').to_i
+      last_refresh_time = IO.read('app/last_wallpaper_refresh').to_i
       (Time.now.to_i - last_refresh_time) >= 600
     rescue Errno::ENOENT
       true
