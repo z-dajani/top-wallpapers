@@ -12,7 +12,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'pry-rails'
 gem "paperclip", "~> 4.3"
 gem 'sdoc', '~> 0.4.0', group: :doc
-
+gem 'puma', '2.11.1', group: :production
 group :development, :test do
   gem 'byebug'
 end
