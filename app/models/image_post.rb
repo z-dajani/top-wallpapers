@@ -62,13 +62,13 @@ class ImagePost < ActiveRecord::Base
   validates :score, presence: true, numericality: { greater_than: -1 }
   validates_with ImagePostValidator
 
-  def self.refresh_posts
+  def self.refresh_posts(subreddit_count: 11)
     return unless ready_to_refresh?
     File.write('app/last_wallpaper_refresh', Time.now.to_i)
 
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
     abandonedporn mapporn architectureporn roomporn exposureporn)
-    subreddits.each do |sub|
+    subreddits.first(subreddit_count).each do |sub|
       old_posts = ImagePost.all.select{ |p| p.subreddit =~ /#{sub}/i }
       old_posts.each { |p| p.destroy }
       subreddit_top_daily_posts(sub, 7)
