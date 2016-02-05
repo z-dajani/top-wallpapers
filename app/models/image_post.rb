@@ -78,7 +78,7 @@ class ImagePost < ActiveRecord::Base
   def self.ready_to_refresh?
     begin
       last_refresh_time = IO.read('app/last_wallpaper_refresh').to_i
-      (Time.now.to_i - last_refresh_time) >= 600
+      (Time.now.to_i - last_refresh_time) >= 1800
     rescue Errno::ENOENT
       true
     end      
