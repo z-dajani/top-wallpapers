@@ -15,11 +15,7 @@
         <%= wrap_in_li(link_to('Next Page', root_path(page: 2))) if @next_page_valid %>
       <% end %> 
 
-      <% if params[:ready_for_refresh].present? %> 
-        <%= wrap_in_li(link_to('Refresh posts (last refreshed _ )', refresh_path, method: :put)) %> 
-      <% else %> 
-        <%= wrap_in_li(link_to('Posts were last refreshed _', '#')) %> 
-      <% end %> 
+      <%= render 'refresh_info' %> 
     </ul>
 
   </div>

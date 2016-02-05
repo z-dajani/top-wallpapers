@@ -1,0 +1,19 @@
+<% minutes_since_refresh = params[:minutes_since_refresh].to_i %> 
+
+<% if params[:refresh_status] == :ready %>
+  <% if minutes_since_refresh <= 120  %> 
+    <%= wrap_in_li(link_to('Refresh posts (last refreshed ' +
+                           "#{minutes_since_refresh} minutes ago)",
+                           refresh_path, method: :put)) %>
+  <% else %> 
+    <%= wrap_in_li(link_to('Refresh posts (last refreshed 2+ hours ago)',
+                           refresh_path, method: :put)) %>
+  <% end %> 
+
+<% elsif params[:refresh_status] == :empty %> 
+  <%= wrap_in_li(link_to('Refresh posts', refresh_path, method: :put)) %>
+
+<% elsif params[:refresh_status] == :not_ready %> 
+  <%= wrap_in_li(link_to('Posts were refreshed ' + 
+  pluralize(minutes_since_refresh, " minute") +' ago', '#')) %> 
+<% end %> 

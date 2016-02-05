@@ -9,7 +9,8 @@ class ImagePostController < ApplicationController
       @posts = ImagePost.order('score DESC').first(20)
       @next_page_valid = true if ImagePost.count > 20
     end
-    params[:ready_for_refresh] = ImagePost.ready_to_refresh?
+    params[:refresh_status] = ImagePost.refresh_status
+    params[:minutes_since_refresh] = ImagePost.minutes_since_last_refresh
   end
 
   def refresh

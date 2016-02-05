@@ -63,7 +63,8 @@ class ImagePost < ActiveRecord::Base
   validates_with ImagePostValidator
 
   def self.refresh_posts(subreddit_count: 11)
-    return unless ready_to_refresh?
+    status = refresh_status
+    return unless status == :true || status == :empty 
     File.write('app/last_wallpaper_refresh', Time.now.to_i)
 
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
@@ -75,13 +76,18 @@ class ImagePost < ActiveRecord::Base
     end
   end
 
-  def self.ready_to_refresh?
+  def self.minutes_since_last_refresh
     begin
       last_refresh_time = IO.read('app/last_wallpaper_refresh').to_i
-      (Time.now.to_i - last_refresh_time) >= 1800
+      (Time.now.to_i - last_refresh_time) / 60
     rescue Errno::ENOENT
-      true
-    end      
+      -1
+    end
+  end
+
+  def self.refresh_status
+    return :empty if ImagePost.count == 0
+    minutes_since_last_refresh > 30 ? :ready : :not_ready
   end
 
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
