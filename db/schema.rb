@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204170757) do
+ActiveRecord::Schema.define(version: 20160209014640) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -47,5 +47,10 @@ ActiveRecord::Schema.define(version: 20160204170757) do
   add_index "image_posts", ["permalink"], name: "index_image_posts_on_permalink", unique: true
   add_index "image_posts", ["thumbnail"], name: "index_image_posts_on_thumbnail", unique: true
   add_index "image_posts", ["url"], name: "index_image_posts_on_url", unique: true
+
+  create_table "refresh_instances", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end

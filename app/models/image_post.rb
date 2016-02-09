@@ -64,8 +64,8 @@ class ImagePost < ActiveRecord::Base
 
   def self.refresh_posts(subreddit_count: 11)
     status = refresh_status
-    return unless status == :true || status == :empty 
-    File.write('app/last_wallpaper_refresh', Time.now.to_i)
+    return unless status == :ready || status == :empty 
+    RefreshInstance.create
 
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
     abandonedporn mapporn architectureporn roomporn exposureporn)
@@ -77,10 +77,11 @@ class ImagePost < ActiveRecord::Base
   end
 
   def self.minutes_since_last_refresh
-    begin
-      last_refresh_time = IO.read('app/last_wallpaper_refresh').to_i
-      (Time.now.to_i - last_refresh_time) / 60
-    rescue Errno::ENOENT
+    latest_refresh = RefreshInstance.last
+    if latest_refresh
+      latest_refresh_time = latest_refresh.created_at.to_i
+      (Time.now.to_i - latest_refresh_time) / 60
+    else
       -1
     end
   end
