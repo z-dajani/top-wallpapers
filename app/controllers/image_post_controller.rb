@@ -15,7 +15,7 @@ class ImagePostController < ApplicationController
 
   def refresh
     ImagePost.delay.refresh_posts
-    redirect_to root_path
+    redirect_to root_path(refreshing_msg: true)
   end
 
 end
