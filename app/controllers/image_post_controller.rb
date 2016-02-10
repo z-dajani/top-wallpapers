@@ -11,11 +11,13 @@ class ImagePostController < ApplicationController
     end
     params[:refresh_status] = ImagePost.refresh_status
     params[:minutes_since_refresh] = ImagePost.minutes_since_last_refresh
+
   end
 
   def refresh
     ImagePost.delay.refresh_posts
-    redirect_to root_path(refreshing_msg: true)
+    flash[:refreshing_msg] = true
+    redirect_to root_path
   end
 
 end

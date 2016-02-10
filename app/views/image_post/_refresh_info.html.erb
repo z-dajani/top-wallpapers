@@ -1,6 +1,6 @@
 <% min = params[:minutes_since_refresh].to_i %> 
 
-<% if min == 0 || params[:refreshing_msg] %>
+<% if min == 0 || flash[:refreshing_msg] %>
   <%= wrap_in_li(link_to('Posts are currently being refreshed', refresh_path, method: :put)) %>
 
 <% elsif params[:refresh_status] == :ready %>

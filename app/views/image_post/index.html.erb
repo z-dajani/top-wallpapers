@@ -2,7 +2,7 @@
   <div class="container-fluid">
   
     <div class="navbar-header">
-      <%= link_to "Top Wallpapers", :root, class: 'navbar-brand' %>
+      <%= link_to "Top Reddit Wallpapers", :root, class: 'navbar-brand' %>
     </div>
 
     <ul class="nav navbar-nav">
@@ -48,5 +48,9 @@
 <% elsif ImagePost.count == 0 %> 
   <div class='jumbotron'>
     <h2 class='text-center'>No posts exist in the database</h2>
+    <h4 class='text-center'>
+      <%= link_to('Click here ', refresh_path, method: :put) +
+           'and they will be compiled' unless flash[:refreshing_msg] %>
+    </h4>
   </div>
 <% end %> 
