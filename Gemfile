@@ -9,7 +9,6 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'pry-rails'
-gem "paperclip", "~> 4.3"
 gem 'delayed_job_active_record'
 gem 'sdoc', '~> 0.4.0', group: :doc
 

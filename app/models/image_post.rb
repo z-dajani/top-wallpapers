@@ -51,9 +51,6 @@ end
 class ImagePost < ActiveRecord::Base
   before_save { self.title = self.title[0..69] if self.title.length > 70 }
 
-  has_attached_file :thumb_img, styles: { thumb: "150x60>" }, 
-                                default_url: "/images/:style/missing.png"
-  validates_attachment_content_type :thumb_img, content_type: /\Aimage\/.*\Z/
   validates :title, presence: true
   validates :url, presence: true, uniqueness: true
   validates :permalink, presence: true, uniqueness: true
@@ -76,7 +73,7 @@ class ImagePost < ActiveRecord::Base
     end
   end
 
-  def self.minutes_since_last_refresh
+  def self.min_since_last_refresh
     latest_refresh = RefreshInstance.last
     if latest_refresh
       latest_refresh_time = latest_refresh.created_at.to_i
@@ -88,7 +85,7 @@ class ImagePost < ActiveRecord::Base
 
   def self.refresh_status
     return :empty if ImagePost.count == 0
-    minutes_since_last_refresh > 30 ? :ready : :not_ready
+    min_since_last_refresh > 30 ? :ready : :not_ready
   end
 
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
@@ -119,13 +116,7 @@ class ImagePost < ActiveRecord::Base
       ip = ImagePost.new(title: p['data']['title'], url: p['data']['url'],
         permalink: p['data']['permalink'], thumbnail: p['data']['thumbnail'],
         subreddit: p['data']['subreddit'], score: p['data']['score'])
-      if ip.save
-        ip.thumb_img = open(ip.thumbnail)
-        ip.save
-        ip
-      else
-        nil
-      end
+      ip.save ? ip : nil
     end
     post_info.compact
   end

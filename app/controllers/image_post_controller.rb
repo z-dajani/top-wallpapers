@@ -10,7 +10,7 @@ class ImagePostController < ApplicationController
       @next_page_valid = true if ImagePost.count > 20
     end
     params[:refresh_status] = ImagePost.refresh_status
-    params[:minutes_since_refresh] = ImagePost.minutes_since_last_refresh
+    params[:min_since_refresh] = ImagePost.min_since_last_refresh
 
   end
 
