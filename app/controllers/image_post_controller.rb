@@ -15,8 +15,8 @@ class ImagePostController < ApplicationController
   end
 
   def refresh
+    RefreshBlock.create
     ImagePost.delay.refresh_posts
-    flash[:refreshing_msg] = true
     redirect_to root_path
   end
 

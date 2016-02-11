@@ -1,6 +1,6 @@
 <% min = params[:min_since_refresh].to_i %> 
 
-<% if min == 0 || flash[:refreshing_msg] %>
+<% if params[:refresh_status] == :blocked %>
   <%= wrap_in_li(link_to('Posts are being updated. New posts will be ' + 
                          'viewable upon page refresh', '#')) %>
 
@@ -17,5 +17,9 @@
   <%= wrap_in_li(link_to('Refresh posts', refresh_path, method: :put)) %>
 
 <% elsif params[:refresh_status] == :not_ready %> 
-  <%= wrap_in_li(link_to("Posts were refreshed #{min} min ago", '#')) %>
+  <% if min == 0 %> 
+    <%= wrap_in_li(link_to("Posts were refreshed under a minute ago", '#')) %>
+  <% else %> 
+    <%= wrap_in_li(link_to("Posts were refreshed #{min} min ago", '#')) %>
+  <% end %> 
 <% end %> 

@@ -61,8 +61,7 @@ class ImagePost < ActiveRecord::Base
 
   def self.refresh_posts(subreddit_count: 11)
     status = refresh_status
-    return unless status == :ready || status == :empty 
-    RefreshInstance.create
+    return if status == :not_ready 
 
     subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
     abandonedporn mapporn architectureporn roomporn exposureporn)
@@ -71,6 +70,8 @@ class ImagePost < ActiveRecord::Base
       old_posts.each { |p| p.destroy }
       subreddit_top_daily_posts(sub, 7)
     end
+    RefreshInstance.create
+    RefreshBlock.destroy_all
   end
 
   def self.min_since_last_refresh
@@ -84,6 +85,7 @@ class ImagePost < ActiveRecord::Base
   end
 
   def self.refresh_status
+    return :blocked if RefreshBlock.any?
     return :empty if ImagePost.count == 0
     min_since_last_refresh > 30 ? :ready : :not_ready
   end
