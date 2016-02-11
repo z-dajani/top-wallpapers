@@ -9,10 +9,10 @@
       <% p = params[:page].to_i %>
 
       <% if p > 1 %>
-        <%= wrap_in_li(link_to('Previous Page', root_path(page: p-1))) if @previous_page_valid %> 
-        <%= wrap_in_li(link_to('Next Page', root_path(page: p+1))) if @next_page_valid %> 
+        <%= wrap_in_li(link_to('Previous Page', root_path(page: p-1), class: 'underline')) if @previous_page_valid %> 
+        <%= wrap_in_li(link_to('Next Page', root_path(page: p+1), class: 'underline')) if @next_page_valid %> 
       <% else %> 
-        <%= wrap_in_li(link_to('Next Page', root_path(page: 2))) if @next_page_valid %>
+        <%= wrap_in_li(link_to('Next Page', root_path(page: 2), class: 'underline')) if @next_page_valid %>
       <% end %> 
 
       <%= render 'refresh_info' %> 
