@@ -1,8 +1,7 @@
 <% min = params[:min_since_refresh].to_i %> 
 
 <% if params[:refresh_status] == :blocked %>
-  <%= wrap_in_li(link_to('Posts are being updated. New posts will be ' + 
-                         'viewable upon page refresh', '#')) %>
+  <%= wrap_in_li(link_to('Posts are being updated', '#')) %>
 
 <% elsif params[:refresh_status] == :ready %>
   <% if min <= 120 %>
