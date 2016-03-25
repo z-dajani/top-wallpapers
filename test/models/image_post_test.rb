@@ -137,4 +137,28 @@ class ImagePostTest < ActiveSupport::TestCase
     end
   end
 
+  test 'extract_title_dimensions - valid cases' do
+    cases = { 'hello 1920 x 1080' => [1920,1080],
+              '1920x1080 hello'   => [1920,1080],
+              '..1920X1080...'    => [1920,1080],
+              '1920 X 1080 x 98'  => [1920,1080],
+              '(1920x1080)'       => [1920,1080],
+              '[1920x1080]'       => [1920,1080],
+              'x 1920 x 1080)'    => [1920,1080],
+              '1024x740'          => [1024,740],
+              '1024 x 740'        => [1024,740],
+              '(1024x740)'        => [1024,740] }
+    cases.each do |title, dimensions|
+      assert_equal ImagePost.extract_title_dimensions(title), dimensions
+    end
+  end
+
+  test 'extract_title_dimensions - invalid cases' do
+    failing_cases = ['at startfe f str', '-', '1920 1080', '24x85',
+                     '24 x 85', '1920x8j40', '1920x', 'x 840']
+
+    failing_cases.each do |title|
+      assert_equal ImagePost.extract_title_dimensions(title), false
+    end
+  end
 end

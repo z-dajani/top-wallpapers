@@ -63,8 +63,8 @@ class ImagePost < ActiveRecord::Base
     status = refresh_status
     return if status == :not_ready 
 
-    subreddits = %w(wallpaper wallpapers earthporn carporn skyporn foodporn
-    abandonedporn mapporn architectureporn roomporn exposureporn)
+    subreddits = %w(wallpaper wallpapers earthporn carporn skyporn
+    foodporn abandonedporn mapporn architectureporn roomporn exposureporn)
     subreddits.first(subreddit_count).each do |sub|
       old_posts = ImagePost.all.select{ |p| p.subreddit =~ /#{sub}/i }
       old_posts.each { |p| p.destroy }
@@ -101,6 +101,17 @@ class ImagePost < ActiveRecord::Base
     end
   end
 
+  def self.extract_title_dimensions(title)
+    result = (/[0-9]{3,4}[ ]?(x|×)[ ]?[0-9]{3,4}/i).match(title)  
+    return false if result.nil?
+    str = result.to_s.gsub(' ', '').downcase
+    x_ind = (str =~ /(×|x)/i)
+
+    width = str[0...x_ind].to_i
+    height = str[x_ind+1..str.length].to_i
+    return [width, height]
+  end
+
   private
 
   def self.get_json_response(_url)
@@ -117,9 +128,12 @@ class ImagePost < ActiveRecord::Base
     post_info = posts.map do |p|
       ip = ImagePost.new(title: p['data']['title'], url: p['data']['url'],
         permalink: p['data']['permalink'], thumbnail: p['data']['thumbnail'],
-        subreddit: p['data']['subreddit'], score: p['data']['score'])
+        subreddit: p['data']['subreddit'], 
+        score: p['data']['score'])
       ip.save ? ip : nil
     end
     post_info.compact
   end
+
+
 end
