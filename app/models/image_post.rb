@@ -70,6 +70,19 @@ class ImagePost < ActiveRecord::Base
   validates :height, inclusion: 100..10000, allow_nil: true
   validates_with ImagePostValidator
 
+  def fill_dimensions_from_title
+    result = (/[0-9]{3,4}[ ]?(x|×)[ ]?[0-9]{3,4}/i).match(title)  
+    return false if result.nil?
+    str = result.to_s.gsub(' ', '').downcase
+    x_ind = (str =~ /(×|x)/i)
+
+    self.width = str[0...x_ind].to_i
+    self.height = str[x_ind+1..str.length].to_i
+    true
+  end
+
+  ###class methods
+
   def self.refresh_posts(subreddit_count: 11)
     status = refresh_status
     return if status == :not_ready 
@@ -112,18 +125,9 @@ class ImagePost < ActiveRecord::Base
     end
   end
 
-  def self.extract_title_dimensions(title)
-    result = (/[0-9]{3,4}[ ]?(x|×)[ ]?[0-9]{3,4}/i).match(title)  
-    return false if result.nil?
-    str = result.to_s.gsub(' ', '').downcase
-    x_ind = (str =~ /(×|x)/i)
-
-    width = str[0...x_ind].to_i
-    height = str[x_ind+1..str.length].to_i
-    return [width, height]
-  end
 
   private
+  
 
   def self.get_json_response(_url)
     url = URI.parse(_url)
@@ -141,10 +145,10 @@ class ImagePost < ActiveRecord::Base
         permalink: p['data']['permalink'], score: p['data']['score'],
         thumbnail: p['data']['thumbnail'],
         subreddit: p['data']['subreddit'])
+      ip.fill_dimensions_from_title
       ip.save ? ip : nil
     end
     post_info.compact
   end
-
 
 end

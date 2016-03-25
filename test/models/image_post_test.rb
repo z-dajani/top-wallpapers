@@ -152,8 +152,7 @@ class ImagePostTest < ActiveSupport::TestCase
     posts = ImagePost.send(:extract_post_info, $top_raw_posts)
     attributes = []
     posts.each do |p|
-      attributes << p.attributes.except('width', 'height', 'id',
-                                        'created_at', 'updated_at')
+      attributes << p.attributes.except('id', 'created_at', 'updated_at')
     end
     assert_equal($top_posts_attr, attributes)
   end
@@ -172,7 +171,7 @@ class ImagePostTest < ActiveSupport::TestCase
     end
   end
 
-  test 'extract_title_dimensions - valid cases' do
+  test 'fill_dimensions_from_title - valid cases' do
     cases = { 'hello 1920 x 1080' => [1920,1080],
               '1920x1080 hello'   => [1920,1080],
               '..1920X1080...'    => [1920,1080],
@@ -184,16 +183,19 @@ class ImagePostTest < ActiveSupport::TestCase
               '1024 x 740'        => [1024,740],
               '(1024x740)'        => [1024,740] }
     cases.each do |title, dimensions|
-      assert_equal ImagePost.extract_title_dimensions(title), dimensions
+      @post.title = title
+      @post.fill_dimensions_from_title
+      assert_equal [@post.width, @post.height], dimensions
     end
   end
 
-  test 'extract_title_dimensions - invalid cases' do
+  test 'fill_dimensions_from_title - invalid cases' do
     failing_cases = ['at startfe f str', '-', '1920 1080', '24x85',
                      '24 x 85', '1920x8j40', '1920x', 'x 840']
 
     failing_cases.each do |title|
-      assert_equal ImagePost.extract_title_dimensions(title), false
+      @post.title = title
+      assert_not @post.fill_dimensions_from_title
     end
   end
 end

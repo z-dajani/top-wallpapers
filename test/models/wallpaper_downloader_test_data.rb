@@ -1,23 +1,27 @@
 require 'json'
 
 $top_posts_attr = 
-[ {"title"=>"The Patriarchs, Zion National Park [OC] [3135x1272]",
- "url"=>"http://i.imgur.com/KKl1KjY.jpg?1",
- "permalink"=>
-  "/r/EarthPorn/comments/3z0og3/the_patriarchs_zion_national_park_oc_3135x1272/",
- "thumbnail"=>
-  "http://a.thumbs.redditmedia.com/JMUsNmFFpTWnZHFf5f2zTXA1jZzFtyIqKMwGN1dUjN8.jpg",
- "subreddit"=>"EarthPorn",
- "score"=>2614},
+[ {'title'=>'The Patriarchs, Zion National Park [OC] [3135x1272]',
+ 'url'=>'http://i.imgur.com/KKl1KjY.jpg?1',
+ 'permalink'=>
+  '/r/EarthPorn/comments/3z0og3/the_patriarchs_zion_national_park_oc_3135x1272/',
+ 'thumbnail'=>
+  'http://a.thumbs.redditmedia.com/JMUsNmFFpTWnZHFf5f2zTXA1jZzFtyIqKMwGN1dUjN8.jpg',
+ 'subreddit'=>'EarthPorn',
+ 'score' => 2614,
+ 'width' => 3135,
+ 'height'=> 1272},
 
-  {"title"=>"Squamish, BC Canada - Great place to end 2015! [OC] [1200 × 800]",
- "url"=>"http://i.imgur.com/No9jpTV.jpg",
- "permalink"=>
-  "/r/EarthPorn/comments/3z0270/squamish_bc_canada_great_place_to_end_2015_oc/",
- "thumbnail"=>
-  "http://b.thumbs.redditmedia.com/yMHzq80QK_6I2p6Y6og1BmEg64aP-qLuO3c2xpIVpBM.jpg",
- "subreddit"=>"EarthPorn",
- "score"=>134} ]
+  {'title'=>'Squamish, BC Canada - Great place to end 2015! [OC] [1200 × 800]',
+ 'url'=>'http://i.imgur.com/No9jpTV.jpg',
+ 'permalink'=>
+  '/r/EarthPorn/comments/3z0270/squamish_bc_canada_great_place_to_end_2015_oc/',
+ 'thumbnail'=>
+  'http://b.thumbs.redditmedia.com/yMHzq80QK_6I2p6Y6og1BmEg64aP-qLuO3c2xpIVpBM.jpg',
+ 'subreddit'=>'EarthPorn',
+ 'score'  => 134,
+ 'width'  => 1200,
+ 'height' => 800} ]
 
 $top_raw_posts = JSON.parse(%q{
 [
