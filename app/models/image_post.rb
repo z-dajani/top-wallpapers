@@ -49,8 +49,6 @@ class ImagePostValidator < ActiveModel::Validator
 end
 
 class ImagePost < ActiveRecord::Base
-  before_save { self.title = self.title[0..69] if self.title.length > 70 }
-
   validates :title, presence: true
   validates :url, presence: true, uniqueness: true
   validates :permalink, presence: true, uniqueness: true

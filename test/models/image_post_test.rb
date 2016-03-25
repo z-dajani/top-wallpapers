@@ -16,12 +16,6 @@ class ImagePostTest < ActiveSupport::TestCase
     assert_not @post.valid?
   end
 
-  test 'large titles should be shrunken before save' do
-    @post.title = 'a' * 71
-    @post.save
-    assert @post.title.length == 70
-  end
-
   test 'url should be unique' do
     @post.save
     post2 = valid_image_post(save: false)
