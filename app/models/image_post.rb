@@ -17,7 +17,7 @@ class ImagePostValidator < ActiveModel::Validator
     parsed_url = URI.parse(post.url)
     host = parsed_url.host
 
-    unless host == 'imgur.com' || host == 'i.imgur.com' || host == 'm.imgur.com'
+    unless %w(imgur.com i.imgur.com m.imgur.com).include?(host)
       post.errors[:url] << 'is not an imgur link'
     end
 
