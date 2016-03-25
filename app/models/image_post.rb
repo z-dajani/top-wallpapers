@@ -5,6 +5,7 @@ class ImagePostValidator < ActiveModel::Validator
     validate_url(post)
     validate_thumbnail(post)
     validate_permalink(post)
+    validate_dimensions(post)
   end
 
   def validate_url(post)
@@ -46,6 +47,16 @@ class ImagePostValidator < ActiveModel::Validator
     end
   end
 
+  def validate_dimensions(post)
+    if post.height.present? && post.width.nil?
+      post.errors[:width] << 'height was present, width was not'
+    end
+
+    if post.width.present? && post.height.nil?
+      post.errors[:height] << 'width was present, height was not'
+    end
+  end
+
 end
 
 class ImagePost < ActiveRecord::Base
@@ -55,6 +66,8 @@ class ImagePost < ActiveRecord::Base
   validates :thumbnail, presence: true, uniqueness: true
   validates :subreddit, presence: true
   validates :score, presence: true, numericality: { greater_than: -1 }
+  validates :width, inclusion: 100..10000, allow_nil: true
+  validates :height, inclusion: 100..10000, allow_nil: true
   validates_with ImagePostValidator
 
   def self.refresh_posts(subreddit_count: 11)
@@ -125,9 +138,9 @@ class ImagePost < ActiveRecord::Base
   def self.extract_post_info(posts)
     post_info = posts.map do |p|
       ip = ImagePost.new(title: p['data']['title'], url: p['data']['url'],
-        permalink: p['data']['permalink'], thumbnail: p['data']['thumbnail'],
-        subreddit: p['data']['subreddit'], 
-        score: p['data']['score'])
+        permalink: p['data']['permalink'], score: p['data']['score'],
+        thumbnail: p['data']['thumbnail'],
+        subreddit: p['data']['subreddit'])
       ip.save ? ip : nil
     end
     post_info.compact

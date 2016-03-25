@@ -108,11 +108,52 @@ class ImagePostTest < ActiveSupport::TestCase
     assert_not @post.valid?
   end
 
+  test 'valid width and height' do
+    @post.width = 1920
+    @post.height = 1080
+    assert @post.valid?
+  end
+
+  test 'width should not be too large' do
+    @post.height = 990
+    @post.width = 10001
+    assert_not @post.valid?
+  end
+
+  test 'width should not be too small' do
+    @post.height = 990
+    @post.width = 99
+    assert_not @post.valid?    
+  end
+
+  test 'height should not be too large' do
+    @post.width = 990
+    @post.height = 10001
+    assert_not @post.valid?
+  end
+
+  test 'height should not be too small' do
+    @post.width = 990
+    @post.height = 99
+    assert_not @post.valid?        
+  end
+
+  test 'if width is present, height should be present' do
+    @post.width = 990
+    assert_not @post.valid?
+  end
+
+  test 'if height is present, width should be present' do
+    @post.height = 990
+    assert_not @post.valid?
+  end
+
   test 'extraction of post info' do
     posts = ImagePost.send(:extract_post_info, $top_raw_posts)
     attributes = []
     posts.each do |p|
-      attributes << p.attributes.except('id', 'created_at', 'updated_at')
+      attributes << p.attributes.except('width', 'height', 'id',
+                                        'created_at', 'updated_at')
     end
     assert_equal($top_posts_attr, attributes)
   end
