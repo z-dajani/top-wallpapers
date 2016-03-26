@@ -70,6 +70,10 @@ class ImagePost < ActiveRecord::Base
   validates :height, inclusion: 100..10000, allow_nil: true
   validates_with ImagePostValidator
 
+  SUBREDDIT_LIST = %w(wallpaper wallpapers earthporn carporn skyporn
+  foodporn abandonedporn mapporn spaceporn cityporn seaporn)
+
+
   def fill_dimensions_from_title
     result = (/[0-9]{3,4}[ ]?(x|×)[ ]?[0-9]{3,4}/i).match(title)  
     return false if result.nil?
@@ -81,15 +85,13 @@ class ImagePost < ActiveRecord::Base
     true
   end
 
-  ###class methods
+  ####class methods
 
   def self.refresh_posts(subreddit_count: 11)
     status = refresh_status
     return if status == :not_ready 
 
-    subreddits = %w(wallpaper wallpapers earthporn carporn skyporn
-    foodporn abandonedporn mapporn architectureporn roomporn exposureporn)
-    subreddits.first(subreddit_count).each do |sub|
+    SUBREDDIT_LIST.first(subreddit_count).each do |sub|
       old_posts = ImagePost.all.select{ |p| p.subreddit =~ /#{sub}/i }
       old_posts.each { |p| p.destroy }
       subreddit_top_daily_posts(sub, 7)
@@ -117,7 +119,10 @@ class ImagePost < ActiveRecord::Base
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
     if post_attempts.between?(1, 25)
       url = "https://www.reddit.com/r/#{subreddit_name}/top/.json"
-      response = get_json_response(url)
+      begin
+        response = get_json_response(url)
+      rescue RuntimeError => rte
+      end
       posts = response['data']['children'].first(post_attempts)
       extract_post_info(posts)
     else

@@ -157,12 +157,6 @@ class ImagePostTest < ActiveSupport::TestCase
     assert_equal($top_posts_attr, attributes)
   end
 
-  test 'subreddit_top_daily_posts - invalid subreddit name' do
-    assert_raises RuntimeError do
-      ImagePost.subreddit_top_daily_posts('a' * 100, 10)
-    end
-  end
-
   test 'subreddit_top_daily_posts - invalid post amount' do
     [0,26,'hello'].each do |n|
       assert_raises ArgumentError do
