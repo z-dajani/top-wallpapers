@@ -113,7 +113,7 @@ class ImagePost < ActiveRecord::Base
   def self.refresh_status
     return :blocked if RefreshBlock.any?
     return :empty if ImagePost.count == 0
-    min_since_last_refresh > 30 ? :ready : :not_ready
+    min_since_last_refresh > 60 ? :ready : :not_ready
   end
 
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
