@@ -29,7 +29,7 @@ class ImagePostController < ApplicationController
   def posts_filtered_by_dimensions
     posts = ImagePost.all
     return posts unless params[:height] && params[:width]
-    posts.where(width: params[:width]).where(height: params[:height])
+    posts.where(width: params[:width], height: params[:height])
   end
 
 end

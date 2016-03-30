@@ -39,35 +39,35 @@ class ImagePostControllerTest < ActionController::TestCase
   test 'typical pagination (first page)' do
     42.times { valid_image_post }
     get :index
-    assert_select "a[href='#{root_path}?page=2']"
-    assert_select "a[href='#{root_path}?page=0']", false
+    assert_select "a[href='#{root_path(page: 2)}']"
+    assert_select "a[href='#{root_path(page: 0)}']", false
     assert_select '.post', count: 24
 
     get :index, page: 1
-    assert_select "a[href='#{root_path}?page=2']"
-    assert_select "a[href='#{root_path}?page=0']", false
+    assert_select "a[href='#{root_path(page: 2)}']"
+    assert_select "a[href='#{root_path(page: 0)}']", false
     assert_select '.post', count: 24
   end
 
   test 'typical pagination (not first page)' do
     49.times { valid_image_post }
     get :index, page: 2
-    assert_select "a[href='#{root_path}?page=1']"
-    assert_select "a[href='#{root_path}?page=3']"
+    assert_select "a[href='#{root_path(page: 1)}']"
+    assert_select "a[href='#{root_path(page: 3)}']"
     assert_select '.post', count: 24
   end
 
   test 'pagination when no further pages exist' do
     50.times { valid_image_post }
     get :index, page: 3
-    assert_select "a[href='#{root_path}?page=2']"
-    assert_select "a[href='#{root_path}?page=4']", false
+    assert_select "a[href='#{root_path(page: 2)}']"
+    assert_select "a[href='#{root_path(page: 4)}']", false
     assert_select '.post', count: 2
   end
 
   test 'no pagination links should exist when no ImagePosts exist' do
     get :index
-    assert_select "a[href='#{root_path}?page=2']", false
+    assert_select "a[href='#{root_path(page: 2)}']", false
   end
 
   test 'first page of ImagePosts should show if invalid page param' do
@@ -96,18 +96,18 @@ class ImagePostControllerTest < ActionController::TestCase
   end
 
   test 'filtering posts on index by dimensions - multiple pages' do
-    width, height = [1920,1080]
+    w, h = [1920,1080]
     30.times do 
       i = valid_image_post(save: false)
-      i.width, i.height = width, height
+      i.width, i.height = w, h
       i.save
     end
 
-    get :index, width: width, height: height, page: 1
-    assert_select '.post', count: 24
-
-    get :index, width: width, height: height, page: 2
+    get :index, width: w, height: h, page: 2
     assert_select '.post', count: 6
+    assert_select "a[href='#{root_path(page: 1, width: w, height: h)}']"
+    assert_select "a[href='#{root_path(page: 3, width: w, height: h)}']",
+                  false
   end
 
 
