@@ -10,6 +10,10 @@ body{
   color: #363636;
 }
 
+form{
+  display: inline;
+}
+
 .navbar, .jumbotron, .post-background{
   background-color: #F8F8F8;
 }
@@ -27,4 +31,15 @@ body{
 
 .underline{
   text-decoration: underline;
+}
+
+input[type="text"]{
+  font-size: 13px;
+  border: 2px #C4C4C4 groove;
+  border-radius: 5px;
+  background-color: #F0F0F0;
+}
+
+#filter-form{
+  padding: 12px;
 }

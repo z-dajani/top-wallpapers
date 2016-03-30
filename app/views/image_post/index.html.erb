@@ -6,23 +6,44 @@
     </div>
 
     <ul class="nav navbar-nav">
-      <% p = params[:page].to_i %>
+      <li><a id='filter-form'>
+        <form action="<%= root_path %>" method="get">
+          Width: <input type="text" name="width" size="3" 
+                  placeholder="<%= params[:width] %>">
+          Height: <input type="text" name="height" size="3" 
+                  placeholder="<%= params[:height] %>">
+          <input type="submit" value="Filter">
+        </form> 
+      </a></li>
 
-      <% if p > 1 %>
-        <%= wrap_in_li(link_to('Previous Page', root_path(page: p-1, height: params[:height], width: params[:width]), class: 'underline')) if @previous_page_valid %> 
-        <%= wrap_in_li(link_to('Next Page', root_path(page: p+1, height: params[:height], width: params[:width]), class: 'underline')) if @next_page_valid %> 
+      <% pg = params[:page].to_i %>
+
+      <% if pg > 1 %>
+        <%= wrap_in_li(link_to('Previous Page', 
+              root_path(page: pg-1, height: params[:height],
+                        width: params[:width]),
+              class: 'underline')) if @previous_page_valid %> 
+
+        <%= wrap_in_li(link_to('Next Page', 
+              root_path(page: pg+1, height: params[:height],
+                        width: params[:width]),
+              class: 'underline')) if @next_page_valid %> 
       <% else %> 
-        <%= wrap_in_li(link_to('Next Page', root_path(page: 2, height: params[:height], width: params[:width]), class: 'underline')) if @next_page_valid %>
+        <%= wrap_in_li(link_to('Next Page', 
+              root_path(page: 2, height: params[:height],
+                        width: params[:width]),
+              class: 'underline')) if @next_page_valid %>
       <% end %> 
 
       <%= render 'refresh_info' %> 
+      
     </ul>
 
   </div>
 </header>
 
-
 <% if @posts.present? %> 
+
 
   <div id="posts-container" class='container'>
     <% @posts.each_slice(4) do |posts| %>
@@ -31,6 +52,7 @@
       <% posts.each do |p| %>
           <div class="post col-sm-3">
             <div class="post-background">
+
               <a href='<%= p.url %>'>
                 <%= image_tag(p.thumbnail, width: 170, height: 85) %>
               </a>
@@ -43,6 +65,7 @@
                   &ndash; <%= "#{p.width}x#{p.height}" %>
                 <% end %> 
               </div>
+
             </div>
           </div>
       <% end %> 
@@ -50,6 +73,7 @@
       </div>
     <% end %> 
   </div>
+
 <% elsif ImagePost.count == 0 %> 
   <div class='jumbotron'>
     <h2 class='text-center'>No posts exist in the database</h2>
