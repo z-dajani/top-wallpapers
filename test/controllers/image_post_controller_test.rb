@@ -79,4 +79,37 @@ class ImagePostControllerTest < ActionController::TestCase
     assert_select "a[href='#{lowest_scoring_post.url}']", false
   end
 
+  test 'filtering posts on index by dimensions - single page' do
+    5.times{ valid_image_post }
+    i = valid_image_post(save: false)
+    i.width, i.height = [1920,1080]
+    i.save
+
+    get :index, width: i.width, height: i.height
+    assert_select '.post', count: 1
+
+    get :index, width: i.width, height: i.height, page: 2
+    assert_select '.post', false
+
+    get :index, width: i.width + 1, height: i.height + 1
+    assert_select '.post', false
+  end
+
+  test 'filtering posts on index by dimensions - multiple pages' do
+    width, height = [1920,1080]
+    30.times do 
+      i = valid_image_post(save: false)
+      i.width, i.height = width, height
+      i.save
+    end
+
+    get :index, width: width, height: height, page: 1
+    assert_select '.post', count: 24
+
+    get :index, width: width, height: height, page: 2
+    assert_select '.post', count: 6
+  end
+
+
+
 end
