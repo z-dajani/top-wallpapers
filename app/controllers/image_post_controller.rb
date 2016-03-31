@@ -13,7 +13,7 @@ class ImagePostController < ApplicationController
     end
 
     params[:refresh_status] = ImagePost.refresh_status
-    params[:min_since_refresh] = ImagePost.min_since_last_refresh
+    params[:hr_since_refresh] = ImagePost.hr_since_last_refresh
   end
 
   def refresh

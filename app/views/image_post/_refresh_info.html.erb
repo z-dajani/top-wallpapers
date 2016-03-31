@@ -1,24 +1,24 @@
-<% min = params[:min_since_refresh].to_i %> 
+<% hr = params[:hr_since_refresh].to_i %> 
 
 <% if params[:refresh_status] == :blocked %>
   <%= wrap_in_li(link_to('Posts are being updated', '#')) %>
 
 <% elsif params[:refresh_status] == :ready %>
-  <% if min <= 120 %>
-    <%= wrap_in_li(link_to("Refresh posts (last refreshed #{min} min ago)",
+  <% if hr > 24 %> 
+    <%= wrap_in_li(link_to("Refresh posts (last refreshed over a day ago)",
                            refresh_path, method: :put)) %>
   <% else %> 
-    <%= wrap_in_li(link_to('Refresh posts (last refreshed 2+ hr ago)',
+    <%= wrap_in_li(link_to("Refresh posts (last refreshed #{hr} hr ago)",
                            refresh_path, method: :put)) %>
-  <% end %>
+  <% end %> 
 
 <% elsif params[:refresh_status] == :empty %> 
-  <%= wrap_in_li(link_to('Refresh posts', refresh_path, method: :put)) %>
+  <%= wrap_in_li(link_to('Compile posts', refresh_path, method: :put)) %>
 
 <% elsif params[:refresh_status] == :not_ready %> 
-  <% if min == 0 %> 
-    <%= wrap_in_li(link_to("Posts were refreshed under a minute ago", '#')) %>
+  <% if hr == 0 %> 
+    <%= wrap_in_li(link_to("Posts were refreshed under an hour ago", '#')) %>
   <% else %> 
-    <%= wrap_in_li(link_to("Posts were refreshed #{min} min ago", '#')) %>
+    <%= wrap_in_li(link_to("Posts were refreshed #{hr} hr ago", '#')) %>
   <% end %> 
 <% end %> 

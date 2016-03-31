@@ -40,11 +40,10 @@ class ImagePost < ActiveRecord::Base
     RefreshBlock.destroy_all
   end
 
-  def self.min_since_last_refresh
-    latest_refresh = RefreshInstance.last
-    if latest_refresh
+  def self.hr_since_last_refresh
+    if (latest_refresh = RefreshInstance.last)
       latest_refresh_time = latest_refresh.created_at.to_i
-      (Time.now.to_i - latest_refresh_time) / 60
+      (Time.now.to_i - latest_refresh_time) / 3600
     else
       -1
     end
@@ -53,7 +52,7 @@ class ImagePost < ActiveRecord::Base
   def self.refresh_status
     return :blocked if RefreshBlock.any?
     return :empty if ImagePost.count == 0
-    min_since_last_refresh > 60 ? :ready : :not_ready
+    hr_since_last_refresh >= 4 ? :ready : :not_ready
   end
 
   def self.subreddit_top_daily_posts(subreddit_name, post_attempts)
