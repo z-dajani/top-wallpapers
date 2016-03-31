@@ -34,7 +34,7 @@ class ImagePost < ActiveRecord::Base
     SUBREDDIT_LIST.first(subreddit_count).each do |sub|
       old_posts = ImagePost.all.select{ |p| p.subreddit =~ /#{sub}/i }
       old_posts.each { |p| p.destroy }
-      subreddit_top_daily_posts(sub, 7)
+      subreddit_top_daily_posts(sub, 10)
     end
     RefreshInstance.create
     RefreshBlock.destroy_all
