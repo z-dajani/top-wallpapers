@@ -61,6 +61,7 @@ class ImagePost < ActiveRecord::Base
       begin
         response = get_json_response(url)
       rescue RuntimeError => rte
+        #do nothing
       end
       posts = response['data']['children'].first(post_attempts)
       extract_post_info(posts)
@@ -75,7 +76,7 @@ class ImagePost < ActiveRecord::Base
 
   def self.get_json_response(_url)
     url = URI.parse(_url)
-    req = Net::HTTP::Get.new(url.to_s)
+    req = Net::HTTP::Get.new(url.to_s, {'User-Agent' => 'top-wallpapers'})
     res = Net::HTTP.start(url.host, url.port, use_ssl: true) do 
       |http| http.request(req)
     end
